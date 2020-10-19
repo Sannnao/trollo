@@ -1,0 +1,18 @@
+@import "../../styles/mixins";
+
+.tasks-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+  height: fit-content;
+  margin: 0 1%;
+  @include card;
+
+  &__title {
+    margin-left: 10%;
+  }
+
+  &__tasks {
+    margin-left: 5%;
+  }
+}
