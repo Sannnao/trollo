@@ -6,12 +6,6 @@ const tasksColumnSchema = new mongoose.Schema({
   tasks: Array,
 });
 
-tasksColumnSchema.statics.toResponce = ({ _id: id, title, tasks }) => ({
-  id,
-  title,
-  tasks,
-});
-
 const TasksColumn = mongoose.model('TasksColumn', tasksColumnSchema);
 
 module.exports = TasksColumn;

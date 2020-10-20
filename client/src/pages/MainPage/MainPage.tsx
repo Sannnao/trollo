@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import './main-page.scss';
+
+import { AuthContext } from '../../context/AuthContext';
 
 import {
   TasksColumn,
@@ -8,6 +10,7 @@ import {
 
 export const MainPage: React.FC = () => {
   const [tasksColumns, setTasksColumns] = useState<any[]>([]);
+  const { authUserId } = useContext(AuthContext);
   const mainPageRef: any = useRef(null);
 
   const scrollToRight = () => {
@@ -17,21 +20,46 @@ export const MainPage: React.FC = () => {
   }
 
   useEffect(() => {
+    try {
+      const getTasksColumns = async () => {
+        const tasksColumnsData = await fetch(`/${authUserId}/tasks-columns`);
+        const tasksColumns = await tasksColumnsData.json();
+        console.log(tasksColumns);
+        setTasksColumns(tasksColumns);
+      }
+
+      getTasksColumns();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  useEffect(() => {
     scrollToRight();
   }, [tasksColumns]);
 
   const addTasksColumn = (column: any) => {
+    console.log(column);
     setTasksColumns(columns => [...columns, column]);
+  }
+
+  const deleteTasksColumn = (id: string): void => {
+    const updatedTasksColumns = tasksColumns.filter(({ _id }) => id !== _id);
+    console.log(updatedTasksColumns, id);
+    setTasksColumns(updatedTasksColumns);
   }
 
   return (
     <div className='main-page' ref={mainPageRef}>
-      <TasksColumn tasksColumnName={'Planned'} />
-      <TasksColumn tasksColumnName={'In work'} />
-      <TasksColumn tasksColumnName={'Done'} />
       {
-        tasksColumns.map(({ id, title: columnName, tasks }) =>
-          <TasksColumn key={id} tasksColumnName={columnName} tasks={tasks} />
+        tasksColumns.map(({ _id: id, title: columnName, tasks }) =>
+          <TasksColumn
+            key={id}
+            tasksColumnId={id}
+            tasksColumnName={columnName}
+            tasks={tasks}
+            deleteTasksColumn={deleteTasksColumn}
+          />
         )
       }
       <AddTasksColumn addTasksColumn={addTasksColumn} scrollMainPageToRight={scrollToRight} />

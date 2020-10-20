@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import 'materialize-css';
 import {
   BrowserRouter as Router,
   Route,

@@ -1,0 +1,32 @@
+@import './styles/mixins';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  outline: none;
+  background: inherit;
+  @include card;
+
+  &:hover {
+    background: linear-gradient(to bottom, rgb(247, 247, 247), rgb(224, 224, 224));
+    box-shadow: 0 3px 6px 0 grey;
+    text-shadow: 1px 1px 3px grey;
+  }
+
+  &:active {
+    color:white;
+    background: linear-gradient(to bottom,  rgb(224, 224, 224), rgb(247, 247, 247));
+    box-shadow: 0 2px 4px 0 grey;
+    text-shadow: 2px 2px 3px grey;
+  }
+}
