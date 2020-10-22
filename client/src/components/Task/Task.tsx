@@ -18,8 +18,8 @@ export const Task: React.FC<TaskProps> = ({
 }) => {
   return (
     <li className='task'>
-      <h5>{ taskTitle }</h5>
-      <p>{ taskDescr }</p>
+      <h5 className='task__title'>{ taskTitle }</h5>
+      <p className='task__descr'>{ taskDescr }</p>
       <div>
         <button onClick={() => editTask(taskId)}>Edit</button>
         <button onClick={() => deleteTask(taskId)}>Delete</button>

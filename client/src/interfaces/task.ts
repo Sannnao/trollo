@@ -1,5 +1,5 @@
 export interface TaskShape {
-  taskId: string,
+  _id: string,
   taskTitle: string,
   taskDescr: string,
 }

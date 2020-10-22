@@ -4,12 +4,14 @@ import { TaskShape } from '../../interfaces';
 import './add-task.scss';
 
 type AddTaskProps = {
+  tasksColumnId: string,
   addTaskToColumn(task: TaskShape): void,
-  cancelAddOrEditTask(): void,
+  toggleAddTask(): void,
 }
 
 export const AddTask: React.FC<AddTaskProps> = ({
-  cancelAddOrEditTask,
+  tasksColumnId,
+  toggleAddTask,
   addTaskToColumn,
 }) => {
   const [taskTitle, setTaskTitle] = useState('');
@@ -23,10 +25,29 @@ export const AddTask: React.FC<AddTaskProps> = ({
     setTaskDescr(e.target.value);
   }
 
-  const saveTask = (e: React.FormEvent<HTMLFormElement>) => {
+  const saveTask = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const token = localStorage.getItem(`JWTAuthTraining`);
 
-    // fetch()
+    if (token) {
+      const taskData = await fetch('/task/', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json;charset=utf-8',
+          Authorization: `Bearer ${JSON.parse(token)}`,
+        },
+        body: JSON.stringify({
+          tasksColumnId,
+          taskTitle,
+          taskDescr,
+        })
+      });
+
+      const task = await taskData.json();
+      console.log(task);
+
+      addTaskToColumn(task);
+    }
   }
 
   return (
@@ -44,7 +65,7 @@ export const AddTask: React.FC<AddTaskProps> = ({
       </label>
       <div className='add-task__control-panel'>
         <button type='submit'>Save</button>
-        <button onClick={cancelAddOrEditTask}>Cancel</button>
+        <button onClick={toggleAddTask}>Cancel</button>
       </div>
     </form>
   )

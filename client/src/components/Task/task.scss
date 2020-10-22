@@ -1,0 +1,16 @@
+@import '../../styles/mixins';
+
+.task {
+  margin: 5% 0;
+  padding: 5% 10%;
+
+  @include card;
+
+  &__title {
+    margin-bottom: 5px;
+  }
+
+  &__descr {
+    margin-bottom: 5px;
+  }
+}

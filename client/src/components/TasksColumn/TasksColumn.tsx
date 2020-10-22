@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './tasks-column.scss';
 
 import { TaskShape } from '../../interfaces';
@@ -24,6 +24,26 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
   const [isAddTask, setIsAddTask] = useState(false);
   const [columnTasks, setColumnTasks] = useState<TaskShape[]>([]);
 
+  useEffect(() => {
+    const getColumnTasks = async () => {
+      const token = localStorage.getItem(`JWTAuthTraining`);
+
+      if (token) {
+        const columnTasksData = await fetch(`/${tasksColumnId}/tasks`, {
+          headers: {
+            'Content-type': 'application/json,charset=utf-8;',
+            Authorization: `Bearer ${JSON.parse(token)}`,
+          },
+        });
+        const columnTasks = await columnTasksData.json();
+
+        setColumnTasks(columnTasks);
+      }
+    }
+
+    getColumnTasks();
+  }, []);
+
   const deleteColumn = async () => {
     try {
       await fetch(`/tasks-columns/${tasksColumnId}`, {
@@ -36,15 +56,18 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
     }
   }
 
+  const toggleAddTask = () => setIsAddTask(isAddTask => !isAddTask);
+
   const addTaskToColumn = (task: TaskShape): void => {
     setColumnTasks(columnTasks => {
       const updatedColumnTasks = columnTasks.map(task => ({ ...task }));
       updatedColumnTasks.push(task);
       return updatedColumnTasks;
     });
+
+    toggleAddTask();
   }
 
-  const toggleAddTask = () => setIsAddTask(isAddTask => !isAddTask);
 
   return (
     <section className="tasks-column">
@@ -52,10 +75,11 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
       <h5 className="tasks-column__title">{tasksColumnName}</h5>
       <ul className="tasks-column__tasks">
         {columnTasks.map(({
-          taskId,
+          _id: taskId,
           taskTitle,
           taskDescr,
         }) => <TaskHandler
+            key={taskId}
             addTaskToColumn={addTaskToColumn}
             taskId={taskId}
             taskTitle={taskTitle}
@@ -66,8 +90,9 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
       {
         isAddTask
           ? <AddTask
+              tasksColumnId={tasksColumnId}
               addTaskToColumn={addTaskToColumn}
-              cancelAddOrEditTask={toggleAddTask}
+              toggleAddTask={toggleAddTask}
           />
           : <button onClick={toggleAddTask}>Add new task</button>
       }
