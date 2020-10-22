@@ -1,8 +1,10 @@
 const express = require('express');
 const TasksColumn = require('../models/TasksColumn');
+const Task = require('../models/Task');
 const router = express.Router();
+const auth = require('../middleware/auth');
 
-router.get('/:userId/tasks-columns', async(req, res) => {
+router.get('/:userId/tasks-columns', auth, async(req, res) => {
   try {
     const userId = req.params.userId;
     const tasksColumns = await TasksColumn.find({ userId });
@@ -13,7 +15,7 @@ router.get('/:userId/tasks-columns', async(req, res) => {
   }
 })
 
-router.post('/tasks-column', async(req, res) => {
+router.post('/tasks-column', auth, async(req, res) => {
   try {
     const tasksColumn = await TasksColumn.create(req.body);
 
@@ -23,10 +25,11 @@ router.post('/tasks-column', async(req, res) => {
   }
 })
 
-router.delete('/tasks-columns/:tasksColumnId', async(req, res) => {
+router.delete('/tasks-columns/:tasksColumnId', auth, async(req, res) => {
   try {
     const { tasksColumnId }  = req.params;
     await TasksColumn.findByIdAndDelete(tasksColumnId);
+    await Task.deleteMany({ tasksColumnId });
 
     res.sendStatus(200);
   } catch (err) {

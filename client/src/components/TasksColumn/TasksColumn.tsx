@@ -45,10 +45,17 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
   }, []);
 
   const deleteColumn = async () => {
+    const token = localStorage.getItem(`JWTAuthTraining`);
+
     try {
-      await fetch(`/tasks-columns/${tasksColumnId}`, {
-        method: 'DELETE',
-      });
+      if (token) {
+        await fetch(`/tasks-columns/${tasksColumnId}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${JSON.parse(token)}`,
+          },
+        });
+      }
 
       deleteTasksColumn(tasksColumnId);
     } catch (err) {
