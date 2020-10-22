@@ -1,0 +1,13 @@
+.add-task {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 55%;
+  height: 120px;
+
+  &__control-panel {
+    display: flex;
+    justify-content: space-between;
+  }
+}

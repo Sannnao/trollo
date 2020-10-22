@@ -12,10 +12,14 @@ a {
 }
 
 button {
+  width: max-content;
+  padding: 5px 10px;
+
   border: none;
   outline: none;
   background: inherit;
   @include card;
+
 
   &:hover {
     background: linear-gradient(to bottom, rgb(247, 247, 247), rgb(224, 224, 224));

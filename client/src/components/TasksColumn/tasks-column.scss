@@ -7,18 +7,18 @@
   min-width: 300px;
   height: fit-content;
   margin: 0 1%;
+  padding: 2%;
   @include card;
 
   &__delete-btn {
     position: absolute;
     top: 5px;
     right: 5px;
-    width: 20px;
-    height: 20px;
   }
 
   &__title {
     margin-left: 10%;
+    margin-bottom: 5%;
   }
 
   &__tasks {
