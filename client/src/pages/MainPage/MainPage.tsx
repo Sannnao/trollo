@@ -24,7 +24,7 @@ export const MainPage: React.FC = () => {
       const getTasksColumns = async () => {
         const tasksColumnsData = await fetch(`/${authUserId}/tasks-columns`);
         const tasksColumns = await tasksColumnsData.json();
-        console.log(tasksColumns);
+        console.log(tasksColumns, authUserId);
         setTasksColumns(tasksColumns);
       }
 

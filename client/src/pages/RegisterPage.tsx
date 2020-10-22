@@ -8,32 +8,65 @@ export const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const history = useHistory();
 
-  const onSubmit = (e: React.SyntheticEvent) => {
+  const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    fetch('http://localhost:3000/users/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      })
-    })
-      .then(res => {
-        return res.json()
-      })
-      .then(res => {
-        if (res.errors) {
-          const { name, email, password } = res.errors;
-
-        } else {
-          history.push('/login');
-        }
+    try {
+      const userData = await fetch('/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        })
       });
-  }
+      const { user } = await userData.json();
+      console.log(user);
+
+      await fetch('/tasks-column', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          title: 'To do',
+          tasks: [],
+        })
+      });
+
+      await fetch('/tasks-column', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          title: 'In Progress',
+          tasks: [],
+        })
+      });
+
+      await fetch('/tasks-column', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          title: 'Done',
+          tasks: [],
+        })
+      });
+
+      history.push('/login');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <form style={{

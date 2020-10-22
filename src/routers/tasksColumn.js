@@ -7,7 +7,6 @@ router.get('/:userId/tasks-columns', async(req, res) => {
     const userId = req.params.userId;
     const tasksColumns = await TasksColumn.find({ userId });
 
-    console.log(tasksColumns);
     res.status(200).send(tasksColumns);
   } catch(err) {
     res.status(400).send(err);
@@ -29,7 +28,7 @@ router.delete('/tasks-columns/:tasksColumnId', async(req, res) => {
     const { tasksColumnId }  = req.params;
     await TasksColumn.findByIdAndDelete(tasksColumnId);
 
-    res.send(200);
+    res.sendStatus(200);
   } catch (err) {
     res.status(400).send(err);
   }

@@ -21,7 +21,10 @@ export const Header: React.FC = () => {
               <li><Link to="/logout" className="header__link">Logout</Link></li>
             </>
           ) : (
-              <li><Link to="/login" className="header__link">Login</Link></li>
+              <>
+                <li><Link to="/login" className="header__link">Login</Link></li>
+                <li><Link to="/register" className="header__link">Register</Link></li>
+              </>
             )}
         </ul>
       </nav>
