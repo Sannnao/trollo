@@ -22,10 +22,18 @@ export const MainPage: React.FC = () => {
   useEffect(() => {
     try {
       const getTasksColumns = async () => {
-        const tasksColumnsData = await fetch(`/${authUserId}/tasks-columns`);
-        const tasksColumns = await tasksColumnsData.json();
-        console.log(tasksColumns, authUserId);
-        setTasksColumns(tasksColumns);
+        const token = localStorage.getItem(`JWTAuthTraining`);
+
+        if (token) {
+          const tasksColumnsData = await fetch(`/${authUserId}/tasks-columns`, {
+            headers: {
+              Authorization: `Bearer ${JSON.parse(token)}`,
+            }
+          });
+          const tasksColumns = await tasksColumnsData.json();
+          console.log(tasksColumns, authUserId);
+          setTasksColumns(tasksColumns);
+        }
       }
 
       getTasksColumns();

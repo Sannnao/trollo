@@ -27,24 +27,28 @@ export const AddTasksColumn: React.FC<AddTasksColumnProps> = ({ addTasksColumn, 
 
     if (columnName) {
       try {
+        const token = localStorage.getItem('JWTAuthTraining');
         const upperCaseName = `${columnName[0].toUpperCase()}${columnName.slice(1)}`;
 
-        const tasksColumn = await fetch('/tasks-column', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-          },
-          body: JSON.stringify({
-            userId: authUserId,
-            title: upperCaseName,
-            tasks: [],
-          })
-        });
-        const tasksColumnData = await tasksColumn.json();
+        if (token) {
+          const tasksColumn = await fetch('/tasks-column', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8',
+              Authorization: `Bearer ${JSON.parse(token)}`,
+            },
+            body: JSON.stringify({
+              userId: authUserId,
+              title: upperCaseName,
+              tasks: [],
+            })
+          });
+          const tasksColumnData = await tasksColumn.json();
 
-        addTasksColumn(tasksColumnData);
-        setColumnName('');
-        setIsActive(isActive => !isActive);
+          addTasksColumn(tasksColumnData);
+          setColumnName('');
+          setIsActive(isActive => !isActive);
+        }
       } catch (err) {
         console.log(err);
       }
