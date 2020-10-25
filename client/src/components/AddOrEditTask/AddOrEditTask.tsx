@@ -1,26 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
+import './add-or-edit-task.scss';
 
 type AddOrEditTaskProps = {
-  taskId: string,
-  taskTitle: string,
-  taskDescr: string,
-  cancelAddOrEditTask(): void,
-  addTaskToColumn(task: {
-    taskId: string,
-    taskTitle: string,
-    taskDescr: string,
-  }): void,
+  prevTaskTitle?: string,
+  prevTaskDescr?: string,
+  handleSaveTask(taskTitle: string, taskDescr: string): void,
+  cancelHandleTask(): void,
 }
 
 export const AddOrEditTask: React.FC<AddOrEditTaskProps> = ({
-  addTaskToColumn,
-  taskId,
-  taskTitle: prevTaskTitle,
-  taskDescr: prevTaskDescr,
-  cancelAddOrEditTask,
+  prevTaskTitle = '',
+  prevTaskDescr = '',
+  handleSaveTask,
+  cancelHandleTask,
 }) => {
-  const [taskTitle, setTaskTitle] = useState('');
-  const [taskDescr, setTaskDescr] = useState('');
+  const [taskTitle, setTaskTitle] = useState(prevTaskTitle);
+  const [taskDescr, setTaskDescr] = useState(prevTaskDescr);
 
   const handleTaskTitle = (e: React.FocusEvent<HTMLInputElement>) => {
     setTaskTitle(e.target.value);
@@ -32,18 +28,29 @@ export const AddOrEditTask: React.FC<AddOrEditTaskProps> = ({
 
   const saveTask = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    // fetch()
-  }
+    handleSaveTask(taskTitle, taskDescr);
+    cancelHandleTask();
+    setTaskTitle('');
+    setTaskDescr('');
+  };
 
   return (
-    <form onSubmit={saveTask}>
-      <input value={taskTitle} onChange={handleTaskTitle} />
-      <input value={taskDescr} onChange={handleTaskDescr} />
-      <div>
+    <form
+      className='add-or-edit-task'
+      onSubmit={saveTask}
+    >
+      <label>
+        Enter task title:
+        <input value={taskTitle} onChange={handleTaskTitle} />
+      </label>
+      <label>
+        Enter task description:
+        <input value={taskDescr} onChange={handleTaskDescr} />
+      </label>
+      <div className='add-or-edit-task__control-panel'>
         <button type='submit'>Save</button>
-        <button onClick={cancelAddOrEditTask}>Cancel</button>
+        <button onClick={cancelHandleTask}>Cancel</button>
       </div>
     </form>
   )
-}
+};

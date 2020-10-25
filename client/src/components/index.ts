@@ -7,4 +7,5 @@ export { Task } from './Task/Task';
 export type { TaskProps } from './Task/Task';
 export { AddOrEditTask } from './AddOrEditTask/AddOrEditTask';
 export { AddTask } from './AddTask/AddTask';
+export { EditTask } from './EditTask/EditTask';
 export { TaskHandler } from './TaskHandler/TaskHandler';

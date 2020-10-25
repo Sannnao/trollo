@@ -5,7 +5,7 @@ export type TaskProps = {
   taskId: string,
   taskTitle: string,
   taskDescr: string,
-  editTask(taskId: string): void,
+  editTask(): void,
   deleteTaskFromColumn(taskId: string): void,
 }
 
@@ -41,7 +41,7 @@ export const Task: React.FC<TaskProps> = ({
       <h5 className='task__title'>{taskTitle}</h5>
       <p className='task__descr'>{taskDescr}</p>
       <div>
-        <button onClick={() => editTask(taskId)}>Edit</button>
+        <button onClick={editTask}>Edit</button>
         <button onClick={deleteTask}>Delete</button>
       </div>
     </li>

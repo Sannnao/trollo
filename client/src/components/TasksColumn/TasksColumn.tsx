@@ -75,6 +75,16 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
     toggleAddTask();
   }
 
+  const editTask = (task: TaskShape) => {
+    setColumnTasks(columnTasks => columnTasks.map(oldTask => {
+      if (oldTask._id === task._id) {
+        return task;
+      }
+
+      return oldTask;
+    }))
+  }
+
   const deleteTaskFromColumn = (taskId: string) => {
     setColumnTasks(columnTasks => columnTasks.filter(({ _id }) => taskId !== _id));
   }
@@ -91,7 +101,7 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
           taskDescr,
         }) => <TaskHandler
             key={taskId}
-            addTaskToColumn={addTaskToColumn}
+            editTask={editTask}
             taskId={taskId}
             taskTitle={taskTitle}
             taskDescr={taskDescr}

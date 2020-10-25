@@ -21,6 +21,18 @@ router.post('/task/', auth, async(req, res) => {
   }
 });
 
+router.put('/task/:id', auth, async(req, res) => {
+  try {
+    const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.status(200).send(task);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+})
+
 router.delete('/task/:id', auth, async(req, res) => {
   try {
     await Task.findByIdAndDelete(req.params.id);

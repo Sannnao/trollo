@@ -1,45 +1,51 @@
 import React from 'react';
-import { TaskShape } from '../../interfaces';
 import { AddOrEditTask } from '..';
+import { TaskShape } from '../../interfaces';
 
-type AddTaskProps = {
-  tasksColumnId: string,
-  addTaskToColumn(task: TaskShape): void,
-  toggleAddTask(): void,
+type EditTaskProps = {
+  taskId: string,
+  taskTitle: string,
+  taskDescr: string,
+  toggleEditTask(): void,
+  editTask(task: TaskShape): void,
 }
 
-export const AddTask: React.FC<AddTaskProps> = ({
-  tasksColumnId,
-  toggleAddTask,
-  addTaskToColumn,
+export const EditTask: React.FC<EditTaskProps> = ({
+  taskId,
+  taskTitle,
+  taskDescr,
+  toggleEditTask,
+  editTask,
 }) => {
   const saveTask = async (taskTitle: string, taskDescr: string) => {
     const token = localStorage.getItem(`JWTAuthTraining`);
 
     if (token) {
-      const taskData = await fetch('/task/', {
-        method: 'POST',
+      const taskData = await fetch(`/task/${taskId}`, {
+        method: 'PUT',
         headers: {
           'Content-type': 'application/json;charset=utf-8',
           Authorization: `Bearer ${JSON.parse(token)}`,
         },
         body: JSON.stringify({
-          tasksColumnId,
           taskTitle,
           taskDescr,
         })
       });
 
       const task = await taskData.json();
+      console.log(task, taskId);
 
-      addTaskToColumn(task);
+      editTask(task);
     }
   }
 
   return (
     <AddOrEditTask
+      prevTaskTitle={taskTitle}
+      prevTaskDescr={taskDescr}
       handleSaveTask={saveTask}
-      cancelHandleTask={toggleAddTask}
+      cancelHandleTask={toggleEditTask}
     />
-  )
+  );
 }
