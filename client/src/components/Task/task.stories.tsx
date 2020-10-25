@@ -6,7 +6,7 @@ const taskProps: TaskProps = {
   taskTitle: 'Add redux to the app',
   taskDescr: 'Need to add redux to the app for handy manage all state',
   editTask() {},
-  deleteTask() {},
+  deleteTaskFromColumn() {},
 }
 
 export default {

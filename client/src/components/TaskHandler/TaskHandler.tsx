@@ -7,10 +7,12 @@ type TaskHandlerProps = {
   taskTitle: string,
   taskDescr: string,
   addTaskToColumn(task: TaskShape): void,
+  deleteTaskFromColumn(taskId: string): void,
 }
 
 export const TaskHandler: React.FC<TaskHandlerProps> = ({
   addTaskToColumn,
+  deleteTaskFromColumn,
   taskId,
   taskTitle,
   taskDescr,
@@ -28,6 +30,6 @@ export const TaskHandler: React.FC<TaskHandlerProps> = ({
       taskTitle={taskTitle}
       taskDescr={taskDescr}
       editTask={() => {}}
-      deleteTask={() => {}}
+      deleteTaskFromColumn={deleteTaskFromColumn}
     />
 }

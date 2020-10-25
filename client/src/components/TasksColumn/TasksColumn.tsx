@@ -75,6 +75,10 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
     toggleAddTask();
   }
 
+  const deleteTaskFromColumn = (taskId: string) => {
+    setColumnTasks(columnTasks => columnTasks.filter(({ _id }) => taskId !== _id));
+  }
+
 
   return (
     <section className="tasks-column">
@@ -91,6 +95,7 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
             taskId={taskId}
             taskTitle={taskTitle}
             taskDescr={taskDescr}
+            deleteTaskFromColumn={deleteTaskFromColumn}
           />
         )}
       </ul>

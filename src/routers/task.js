@@ -19,6 +19,16 @@ router.post('/task/', auth, async(req, res) => {
   } catch (err) {
     res.status(400).send(err);
   }
-})
+});
+
+router.delete('/task/:id', auth, async(req, res) => {
+  try {
+    await Task.findByIdAndDelete(req.params.id);
+
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
 
 module.exports = router;
