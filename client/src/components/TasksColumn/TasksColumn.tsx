@@ -71,8 +71,6 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
       updatedColumnTasks.push(task);
       return updatedColumnTasks;
     });
-
-    toggleAddTask();
   }
 
   const editTask = (task: TaskShape) => {

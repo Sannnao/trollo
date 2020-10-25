@@ -6,9 +6,11 @@
   flex-direction: column;
   min-width: 300px;
   height: fit-content;
+  max-height: 100%;
   margin: 0 1%;
   padding: 2%;
   @include card;
+  overflow-y: auto;
 
   &__delete-btn {
     position: absolute;

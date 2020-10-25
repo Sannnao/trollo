@@ -42,18 +42,13 @@ export const MainPage: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    scrollToRight();
-  }, [tasksColumns]);
-
   const addTasksColumn = (column: any) => {
-    console.log(column);
     setTasksColumns(columns => [...columns, column]);
+    scrollToRight();
   }
 
   const deleteTasksColumn = (id: string): void => {
     const updatedTasksColumns = tasksColumns.filter(({ _id }) => id !== _id);
-    console.log(updatedTasksColumns, id);
     setTasksColumns(updatedTasksColumns);
   }
 
