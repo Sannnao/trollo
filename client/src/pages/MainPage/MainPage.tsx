@@ -9,7 +9,7 @@ import {
 } from '../../components';
 
 export const MainPage: React.FC = () => {
-  const [tasksColumns, setTasksColumns] = useState<any[]>([]);
+  const [tasksColumns, setTasksColumns] = useState<any>(null);
   const { authUserId } = useContext(AuthContext);
   const mainPageRef: any = useRef(null);
 
@@ -31,7 +31,6 @@ export const MainPage: React.FC = () => {
             }
           });
           const tasksColumns = await tasksColumnsData.json();
-          console.log(tasksColumns, authUserId);
           setTasksColumns(tasksColumns);
         }
       }
@@ -54,8 +53,8 @@ export const MainPage: React.FC = () => {
 
   return (
     <div className='main-page' ref={mainPageRef}>
-      {
-        tasksColumns.map(({ _id: id, title: columnName, tasks }) =>
+      {tasksColumns
+        ? tasksColumns.map(({ _id: id, title: columnName, tasks }) =>
           <TasksColumn
             key={id}
             tasksColumnId={id}
@@ -64,6 +63,7 @@ export const MainPage: React.FC = () => {
             deleteTasksColumn={deleteTasksColumn}
           />
         )
+        : <div>Loading...</div>
       }
       <AddTasksColumn addTasksColumn={addTasksColumn} scrollMainPageToRight={scrollToRight} />
     </div>

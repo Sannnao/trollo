@@ -23,6 +23,7 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
 }) => {
   const [isAddTask, setIsAddTask] = useState(false);
   const [columnTasks, setColumnTasks] = useState<TaskShape[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getColumnTasks = async () => {
@@ -38,6 +39,7 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
         const columnTasks = await columnTasksData.json();
 
         setColumnTasks(columnTasks);
+        setIsLoading(false);
       }
     }
 
@@ -107,6 +109,7 @@ export const TasksColumn: React.FC<TasksColumnProps> = ({
           />
         )}
       </ul>
+      {isLoading && <div>Loading....</div>}
       {
         isAddTask
           ? <AddTask

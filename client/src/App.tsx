@@ -11,11 +11,13 @@ import { JwtTokenShape } from './interfaces';
 import { AuthContext, AuthContextShape } from './context/AuthContext';
 import { MainPage, LogoutPage, WelcomePage } from './pages';
 import { PrivateRoute } from './routes/PrivateRoute';
+import { UnauthRoute } from './routes/UnauthRoute';
 import { Header, UserInfo } from '../src/components';
 
 import './App.css';
 
 function App() {
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [authUserId, setAuthUserId] = useState<null | number>(null);
 
@@ -32,6 +34,8 @@ function App() {
         setAuthUserId(decoded._id);
       }
     }
+
+    setIsAuthChecked(true);
   }, []);
 
   const authContextData: AuthContextShape = {
@@ -41,7 +45,7 @@ function App() {
     setAuthUserId,
   }
 
-  return (
+  return isAuthChecked ? (
     <AuthContext.Provider value={authContextData}>
       <Router>
         <Header />
@@ -56,14 +60,14 @@ function App() {
             <PrivateRoute path="/logout">
               <LogoutPage />
             </PrivateRoute>
-            <Route path="/welcome">
+            <UnauthRoute path="/welcome">
               <WelcomePage />
-            </Route>
+            </UnauthRoute>
           </Switch>
         </main>
       </Router>
     </AuthContext.Provider>
-  );
+  ) : null;
 }
 
 export default App;

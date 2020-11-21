@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 export const LogoutPage = () => {
   const { setIsAuth } = useContext(AuthContext);
+  const history = useHistory();
 
   const handleLogout = () => {
     const token: string | null = localStorage.getItem(`JWTAuthTraining`);
@@ -19,6 +21,7 @@ export const LogoutPage = () => {
         if (res.status) {
           localStorage.removeItem(`JWTAuthTraining`);
           setIsAuth(false);
+          history.replace('/');
         }
       });
     }
@@ -38,6 +41,7 @@ export const LogoutPage = () => {
         if (res.status) {
           localStorage.removeItem(`JWTAuthTraining`);
           setIsAuth(false);
+          history.replace('/');
         }
       });
     }

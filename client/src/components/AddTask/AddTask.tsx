@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TaskShape } from '../../interfaces';
 import { AddOrEditTask } from '..';
 
@@ -13,7 +13,10 @@ export const AddTask: React.FC<AddTaskProps> = ({
   toggleAddTask,
   addTaskToColumn,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const saveTask = async (taskTitle: string, taskDescr: string) => {
+    setIsLoading(true)
     const token = localStorage.getItem(`JWTAuthTraining`);
 
     if (token) {
@@ -32,14 +35,17 @@ export const AddTask: React.FC<AddTaskProps> = ({
 
       const task = await taskData.json();
 
+      setIsLoading(false);
       addTaskToColumn(task);
     }
   }
 
   return (
-    <AddOrEditTask
-      handleSaveTask={saveTask}
-      cancelHandleTask={toggleAddTask}
-    />
+    isLoading
+      ? <div>Loading</div>
+      : <AddOrEditTask
+        handleSaveTask={saveTask}
+        cancelHandleTask={toggleAddTask}
+      />
   )
 }
