@@ -1,4 +1,4 @@
-export { Input } from './Input';
+export { Input } from './Input/Input';
 export { Header } from './Header/Header';
 export { UserInfo } from './UserInfo/UserInfo';
 export { TasksColumn } from './TasksColumn/TasksColumn';
@@ -9,3 +9,7 @@ export { AddOrEditTask } from './AddOrEditTask/AddOrEditTask';
 export { AddTask } from './AddTask/AddTask';
 export { EditTask } from './EditTask/EditTask';
 export { TaskHandler } from './TaskHandler/TaskHandler';
+export { Logo } from './Logo/Logo';
+export { Auth } from './Auth/Auth';
+export { Login } from './Login/Login';
+export { Register } from './Register/Register';

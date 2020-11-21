@@ -8,19 +8,16 @@ import {
 } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { JwtTokenShape } from './interfaces';
-import { useRoutes } from './routes';
 import { AuthContext, AuthContextShape } from './context/AuthContext';
-
-import { Header } from '../src/components';
+import { MainPage, LogoutPage, WelcomePage } from './pages';
+import { PrivateRoute } from './routes/PrivateRoute';
+import { Header, UserInfo } from '../src/components';
 
 import './App.css';
-
-
 
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [authUserId, setAuthUserId] = useState<null | number>(null);
-  const routes = useRoutes(isAuth);
 
   useEffect(() => {
     const jwtToken = localStorage.getItem('JWTAuthTraining');
@@ -49,7 +46,20 @@ function App() {
       <Router>
         <Header />
         <main className="main">
-          {routes}
+          <Switch>
+            <PrivateRoute path="/" exact>
+              <MainPage />
+            </PrivateRoute>
+            <PrivateRoute path="/user-info">
+              <UserInfo />
+            </PrivateRoute>
+            <PrivateRoute path="/logout">
+              <LogoutPage />
+            </PrivateRoute>
+            <Route path="/welcome">
+              <WelcomePage />
+            </Route>
+          </Switch>
         </main>
       </Router>
     </AuthContext.Provider>

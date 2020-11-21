@@ -8,7 +8,7 @@ export const UserInfo = () => {
     const jwtToken = localStorage.getItem('JWTAuthTraining');
 
     if (jwtToken) {
-      fetch('http://localhost:3000/users/me', {
+      fetch('/users/me', {
         headers: {
           'Content-type': 'application/json,charset=utf-8;',
           Authorization: `Bearer ${JSON.parse(jwtToken)}`,

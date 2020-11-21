@@ -9,7 +9,7 @@ export const LogoutPage = () => {
 
     if (token) {
 
-      fetch('http://localhost:3000/users/me/logout', {
+      fetch('/users/me/logout', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json,charset=utf-8;',
@@ -28,7 +28,7 @@ export const LogoutPage = () => {
     const token: string | null = localStorage.getItem(`JWTAuthTraining`);
 
     if (token) {
-      fetch('http://localhost:3000/users/me/logoutall', {
+      fetch('/users/me/logoutall', {
         method: 'POST',
         headers: {
           'Content-type': 'application/json,charset=utf-8;',

@@ -1,26 +1,28 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import { Input } from '../components';
-import { AuthContext } from '../context/AuthContext';
+import { useHistory, useLocation } from 'react-router-dom';
+import { Input } from '..';
+import { AuthContext } from '../../context/AuthContext';
+import { useInput } from '../../hooks';
 
-export const LoginPage = () => {
+export const Login = () => {
   const history = useHistory();
+  const location = useLocation();
   const { setIsAuth, setAuthUserId } = useContext(AuthContext);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailInput = useInput('');
+  const passwordInput = useInput('');
 
   const onSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    fetch('http://localhost:3000/users/login', {
+    fetch('/users/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
       },
       body: JSON.stringify({
-        email,
-        password,
+        email: emailInput.value,
+        password: passwordInput.value,
       }),
     })
       .then((res) => {
@@ -31,8 +33,11 @@ export const LoginPage = () => {
       .then((res) => {
         localStorage.setItem(`JWTAuthTraining`, JSON.stringify(res.token));
 
+        const { from } = location.state || { from: { pathname: "/" } };
+
         setIsAuth(true);
         setAuthUserId(res.user._id);
+        history.replace(from);
       })
       .catch(console.log);
   };
@@ -47,17 +52,15 @@ export const LoginPage = () => {
     >
       <Input
         type="email"
-        value={email}
-        setValue={setEmail}
         placeholder='Enter email'
+        {...emailInput}
       />
       <Input
         type="password"
-        value={password}
-        setValue={setPassword}
         placeholder='Enter password'
+        {...passwordInput}
       />
-      <button className="waves-effect waves-light btn" type="submit">Login</button>
+      <button className="btn" type="submit">Login</button>
     </form >
   )
 };
