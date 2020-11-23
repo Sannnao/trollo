@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation, useRouteMatch } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useInput } from '../../hooks';
 import { Input } from '..';
+import { LOGIN_ROUTE } from '../../constants/routes/authRoutes';
 
-export const Register = ({ parentPath }: any) => {
+export const Register = () => {
   const nameInput = useInput('');
   const emailInput = useInput('');
   const passwordInput = useInput('');
-  const history = useHistory();
-  console.log(parentPath);
+  const navigate = useNavigate();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,7 +28,7 @@ export const Register = ({ parentPath }: any) => {
       const { user } = await userData.json();
       console.log(user);
 
-      history.push('/welcome/login');
+      navigate(LOGIN_ROUTE);
     } catch (err) {
       console.log(err);
     }

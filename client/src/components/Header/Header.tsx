@@ -14,8 +14,9 @@ export const Header: React.FC = () => {
         <ul className="header__links-container">
           {isAuth
           ? <>
-              <li><Link to="/user-info" className="header__link">User Info</Link></li>
-              <li><Link to="/logout" className="header__link">Logout</Link></li>
+              <li><Link to="tasks-board" className="header__link">Tasks Board</Link></li>
+              <li><Link to="user-info" className="header__link">User Info</Link></li>
+              <li><Link to="logout" className="header__link">Logout</Link></li>
           </>
           : null
           }

@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Input } from '..';
 import { AuthContext } from '../../context/AuthContext';
 import { useInput } from '../../hooks';
 
 export const Login = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const { setIsAuth, setAuthUserId } = useContext(AuthContext);
 
@@ -33,11 +33,11 @@ export const Login = () => {
       .then((res) => {
         localStorage.setItem(`JWTAuthTraining`, JSON.stringify(res.token));
 
-        const { from } = location.state || { from: { pathname: "/" } };
+        const { from }: any = location.state || { from: { pathname: "/main" } };
 
         setIsAuth(true);
         setAuthUserId(res.user._id);
-        history.replace(from);
+        navigate(from, { replace: true });
       })
       .catch(console.log);
   };

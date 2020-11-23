@@ -1,10 +1,7 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
-  BrowserRouter as Router,
   Route,
-  Switch,
-  Link,
-  Redirect,
+  Routes,
 } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { JwtTokenShape } from './interfaces';
@@ -12,7 +9,8 @@ import { AuthContext, AuthContextShape } from './context/AuthContext';
 import { MainPage, LogoutPage, WelcomePage } from './pages';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { UnauthRoute } from './routes/UnauthRoute';
-import { Header, UserInfo } from '../src/components';
+import { UserInfo, Login, Register, TasksBoard } from '../src/components';
+import { LOGIN_ROUTE, REGISTER_ROUTE } from './constants/routes/authRoutes';
 
 import './App.css';
 
@@ -21,7 +19,7 @@ function App() {
   const [isAuth, setIsAuth] = useState(false);
   const [authUserId, setAuthUserId] = useState<null | number>(null);
 
-  useEffect(() => {
+  const checkIsAuth = () => {
     const jwtToken = localStorage.getItem('JWTAuthTraining');
 
     if (jwtToken) {
@@ -32,11 +30,14 @@ function App() {
       if (date < expDate) {
         setIsAuth(true);
         setAuthUserId(decoded._id);
+        setIsAuthChecked(true);
       }
     }
+  }
 
-    setIsAuthChecked(true);
-  }, []);
+  if (!isAuthChecked) {
+    checkIsAuth();
+  }
 
   const authContextData: AuthContextShape = {
     isAuth,
@@ -45,29 +46,21 @@ function App() {
     setAuthUserId,
   }
 
-  return isAuthChecked ? (
+  return (
     <AuthContext.Provider value={authContextData}>
-      <Router>
-        <Header />
-        <main className="main">
-          <Switch>
-            <PrivateRoute path="/" exact>
-              <MainPage />
-            </PrivateRoute>
-            <PrivateRoute path="/user-info">
-              <UserInfo />
-            </PrivateRoute>
-            <PrivateRoute path="/logout">
-              <LogoutPage />
-            </PrivateRoute>
-            <UnauthRoute path="/welcome">
-              <WelcomePage />
-            </UnauthRoute>
-          </Switch>
-        </main>
-      </Router>
-    </AuthContext.Provider>
-  ) : null;
+      <Routes>
+        <UnauthRoute path="/" element={<WelcomePage />}>
+          <Route path={LOGIN_ROUTE} element={<Login />} />
+          <Route path={REGISTER_ROUTE} element={<Register />} />
+        </UnauthRoute>
+        <PrivateRoute path="/main" element={<MainPage />}>
+          <Route path='tasks-board' element={<TasksBoard />}/>
+          <Route path='user-info' element={<UserInfo />}/>
+          <Route path='logout' element={<LogoutPage />} />
+        </PrivateRoute>
+      </Routes>
+    </AuthContext.Provider >
+  );
 }
 
 export default App;

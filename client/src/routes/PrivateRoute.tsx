@@ -1,28 +1,28 @@
 import React from 'react';
-import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { RouteProps } from 'react-router';
+import { Route, Navigate, useLocation } from 'react-router-dom';
+import { LOGIN_ROUTE } from '../constants/routes/authRoutes';
 import { useAuth } from '../hooks/useAuth';
 
 type PrivateRouteProps = {
-  children: React.ReactElement,
+  element: React.ReactElement,
+  children?: React.ReactElement | React.ReactElement[],
 }
 
-export const PrivateRoute: React.FC<PrivateRouteProps & RouteProps> = ({ children, ...props }) => {
+export const PrivateRoute = ({ children, ...props }: PrivateRouteProps & RouteProps) => {
   const { isAuth } = useAuth();
+  const location = useLocation();
 
   return (
-    <Route
-      {...props}
-    >
-      {({ location }) =>
-        isAuth
-        ? children
-        : <Redirect
-          to={{
-            pathname: "/welcome/login",
-            state: { from: location }
-          }}
-        />
-      }
-    </Route>
+    isAuth
+      ? <Route
+        {...props}
+      >
+        {children}
+      </Route>
+      : <Navigate
+        to={LOGIN_ROUTE}
+        state={{from: location.pathname}}
+      />
   );
 }

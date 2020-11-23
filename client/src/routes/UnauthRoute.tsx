@@ -1,14 +1,17 @@
 import React from 'react';
-import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { RouteProps } from 'react-router';
+import { Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 type UnauthRouteProps = {
-  children: React.ReactElement,
+  element: React.ReactElement,
+  children?: React.ReactElement | React.ReactElement[],
 }
 
-export const UnauthRoute: React.FC<UnauthRouteProps & RouteProps> = ({ children, ...props }) => {
+export const UnauthRoute = ({ children, ...props }: UnauthRouteProps & RouteProps) => {
   const { isAuth } = useAuth();
 
+  console.log(children)
   return (
     !isAuth
       ? <Route
@@ -16,8 +19,8 @@ export const UnauthRoute: React.FC<UnauthRouteProps & RouteProps> = ({ children,
       >
         {children}
       </Route>
-      : <Redirect
-        to='/'
+      : <Navigate
+        to='/main'
       />
   );
 }
