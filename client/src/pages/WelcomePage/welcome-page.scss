@@ -1,5 +1,18 @@
 .welcome-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: max-content;
+  grid-template-rows: 2fr auto 3fr;
+  row-gap: 20px;
+  justify-content: center;
+  justify-items: center;
+  width: 100%;
+  height: 100%;
+
+  &__logo {
+    align-self: end;
+  }
+
+  &__auth-container {
+    width: 50%;
+  }
 }

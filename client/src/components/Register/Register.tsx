@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useInput } from '../../hooks';
-import { Input } from '..';
+import { Input, AuthForm } from '..';
 import { LOGIN_ROUTE } from '../../constants/routes/authRoutes';
 
 export const Register = () => {
@@ -35,12 +35,7 @@ export const Register = () => {
   };
 
   return (
-    <form style={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
-      height: 'content-fits',
-    }} onSubmit={onSubmit}>
+    <AuthForm onSubmit={onSubmit} submitBtnText='Register'>
       <Input
         placeholder='Enter name'
         {...nameInput}
@@ -55,7 +50,6 @@ export const Register = () => {
         placeholder='Enter password'
         {...passwordInput}
       />
-      <button type="submit">Register</button>
-    </form>
+    </AuthForm>
   );
 };

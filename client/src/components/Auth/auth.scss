@@ -1,5 +1,16 @@
-.auth {
-  &__link {
+@import '../../styles/mixins';
 
+.auth {
+  width: 100%;
+
+  &__nav {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__link {
+    padding: 5px 10px;
+    font-weight: 700;
+    font-size: 18px;
   }
 }

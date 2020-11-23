@@ -48,17 +48,20 @@ function App() {
 
   return (
     <AuthContext.Provider value={authContextData}>
-      <Routes>
-        <UnauthRoute path="/" element={<WelcomePage />}>
-          <Route path={LOGIN_ROUTE} element={<Login />} />
-          <Route path={REGISTER_ROUTE} element={<Register />} />
-        </UnauthRoute>
-        <PrivateRoute path="/main" element={<MainPage />}>
-          <Route path='tasks-board' element={<TasksBoard />}/>
-          <Route path='user-info' element={<UserInfo />}/>
-          <Route path='logout' element={<LogoutPage />} />
-        </PrivateRoute>
-      </Routes>
+      <div className='app'>
+
+        <Routes>
+          <UnauthRoute path="/" element={<WelcomePage />}>
+            <Route path={LOGIN_ROUTE} element={<Login />} />
+            <Route path={REGISTER_ROUTE} element={<Register />} />
+          </UnauthRoute>
+          <PrivateRoute path="/main" element={<MainPage />}>
+            <Route path='tasks-board' element={<TasksBoard />} />
+            <Route path='user-info' element={<UserInfo />} />
+            <Route path='logout' element={<LogoutPage />} />
+          </PrivateRoute>
+        </Routes>
+      </div>
     </AuthContext.Provider >
   );
 }

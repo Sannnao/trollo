@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Input } from '..';
+import { Input, AuthForm } from '..';
 import { AuthContext } from '../../context/AuthContext';
 import { useInput } from '../../hooks';
 
@@ -43,12 +43,9 @@ export const Login = () => {
   };
 
   return (
-    <form style={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '45%',
-    }}
+    <AuthForm
       onSubmit={onSubmit}
+      submitBtnText='Login'
     >
       <Input
         type="email"
@@ -60,7 +57,6 @@ export const Login = () => {
         placeholder='Enter password'
         {...passwordInput}
       />
-      <button className="btn" type="submit">Login</button>
-    </form >
+    </AuthForm >
   )
 };

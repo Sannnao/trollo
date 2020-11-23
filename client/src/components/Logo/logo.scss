@@ -5,4 +5,14 @@
   &__logo {
     height: 40px;
   }
+
+  &--large {
+    .logo-container__logo {
+      height: 150px;
+    }
+
+    .logo-container__title {
+      font-size: 40px;
+    }
+  }
 }
