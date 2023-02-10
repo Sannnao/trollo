@@ -1,7 +1,11 @@
-const mongoose = require('mongoose')
+const { Pool } = require("pg");
 
-mongoose.connect(process.env.MONGODB_URL, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useUnifiedTopology: true,
-});
+const pool = new Pool();
+
+module.exports = {
+  async query(text, params) {
+    const res = await pool.query(text, params);
+
+    return res;
+  },
+};

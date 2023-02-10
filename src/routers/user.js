@@ -1,14 +1,16 @@
 const express = require('express');
-const User = require('../models/User');
+const { createUser } = require('../db/createUser');
+const { loginUser } = require('../db/loginUser');
+const { logoutUser } = require('../db/logoutUser');
+const { logoutUserFromAll } = require('../db/logoutUserFromAll');
+const { getUserByEmail } = require('../db/getUserByEmail');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
 
 router.post('/users', async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    const token = await user.generateAuthToken();
+    createUser(req.body);
 
     res.status(201).send({ user, token });
   } catch (err) {
@@ -18,31 +20,38 @@ router.post('/users', async (req, res) => {
 
 router.post('/users/login', async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findByCredentials(email, password);
+    const userData = await loginUser(req.body);
 
-    if (!user) {
-      return res.status(401).send({ error: 'Login failed! Check authentication credentials'});
-    }
+    console.log(userData);
 
-    const token = await user.generateAuthToken();
-    res.send({ user, token });
+    res.send(userData);
   } catch (err) {
     res.status(400).send(err);
   }
 });
 
-router.get('/users/me', auth, async(req, res) => {
-  res.send(req.user);
+router.get('/users/me', auth, async (req, res) => {
+  try {
+    const user = await getUserByEmail(req.email);
+
+    if (user) {
+      res.send(user);
+    } else {
+      throw new Error({ error: 'No such user' });
+    }
+  } catch (err) {
+    res.status(500).send(err);
+  }
 });
 
 router.post('/users/me/logout', auth, async (req, res) => {
   try {
-    req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token != req.token;
-    });
-    await req.user.save();
-    res.send();
+    const email = req.email;
+    const token = req.token;
+
+    await logoutUser(email, token);
+
+    res.status(200).send({ message: 'Success' });
   } catch (err) {
     res.status(500).send(err);
   }
@@ -50,9 +59,8 @@ router.post('/users/me/logout', auth, async (req, res) => {
 
 router.post('/users/me/logoutall', auth, async (req, res) => {
   try {
-    req.user.tokens.splice(0, req.user.tokens.length);
-    await req.user.save();
-    res.send();
+    await logoutUserFromAll(req.email);
+    res.status(200).send({ message: 'Success' });
   } catch (err) {
     res.status(500).send(err);
   }

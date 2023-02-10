@@ -5,7 +5,7 @@ export const useHttp = () => {
   const [error, setError] = useState<any>(null);
 
   const request = useCallback(async (
-    url,
+    url = '',
     method = 'GET',
     body = null,
     headers = {}
@@ -25,6 +25,7 @@ export const useHttp = () => {
       return data;
     } catch(err) {
       setLoading(false);
+      // @ts-ignore
       setError(err.message);
       throw err;
     }

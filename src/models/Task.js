@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const taskSchema = mongoose.Schema({
-  tasksColumnId: String,
-  taskTitle: String,
-  taskDescr: String,
-})
+// const taskSchema = mongoose.Schema({
+//   tasksColumnId: String,
+//   taskTitle: String,
+//   taskDescr: String,
+// })
 
-const Task = mongoose.model('Task', taskSchema);
+// const Task = mongoose.model('Task', taskSchema);
 
-module.exports = Task;
+// module.exports = Task;

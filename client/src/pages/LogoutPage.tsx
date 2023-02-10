@@ -8,9 +8,9 @@ export const LogoutPage = () => {
 
   const handleLogout = () => {
     const token: string | null = localStorage.getItem(`JWTAuthTraining`);
+    console.log(token);
 
     if (token) {
-
       fetch('/users/me/logout', {
         method: 'POST',
         headers: {
@@ -48,9 +48,27 @@ export const LogoutPage = () => {
   };
 
   return (
-    <div style={{ display: 'flex', width: '40%', }}>
-      <button style={{ marginRight: 15 }} className='waves-effect waves-light btn' onClick={handleLogout}>Logout</button>
-      <button className='waves-effect waves-light btn' onClick={handleLogoutAll}>Logout All Devices</button>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        width: '40%',
+        marginTop: '20px',
+      }}
+    >
+      <button
+        style={{ marginRight: 15 }}
+        className="waves-effect waves-light btn"
+        onClick={handleLogout}
+      >
+        Logout
+      </button>
+      <button
+        className="waves-effect waves-light btn"
+        onClick={handleLogoutAll}
+      >
+        Logout All Devices
+      </button>
     </div>
   );
-}
+};
