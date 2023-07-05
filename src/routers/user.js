@@ -8,14 +8,14 @@ const auth = require('../middleware/auth');
 
 const router = express.Router();
 
-router.post('/users', async (req, res) => {
-  try {
-    createUser(req.body);
-
-    res.status(201).send({ user, token });
-  } catch (err) {
-    res.status(400).send(err);
-  }
+router.post('/users', (req, res) => {
+  createUser(req.body)
+    .then((result) => {
+      res.status(201).send('Sucksex!');
+    })
+    .catch((err) => {
+      res.status(400).send(err);
+    });
 });
 
 router.post('/users/login', async (req, res) => {

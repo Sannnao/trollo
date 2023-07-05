@@ -16,3 +16,4 @@ export { Register } from './Register/Register';
 export { Layout } from './Layout/Layout';
 export { TasksBoard } from './TasksBoard/TasksBoard';
 export { AuthForm } from './AuthForm/AuthForm';
+export { Notification } from './Notification/Notification';

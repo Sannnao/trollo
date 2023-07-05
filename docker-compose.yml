@@ -1,0 +1,27 @@
+services:
+  app:
+    image: node:18-alpine
+    command: sh -c "npm install && npm run start:docker"
+    ports:
+      - 4000:4000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      PORT: 4000
+      PGHOST: postgres
+      PGDATABASE: trollo
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: 12345qwert
+      JWT_SECRET: 50ac1d6f95bc1859b60b4730ef7754dec6015eb936046cc4765423bf28846971be98b4c5451fd4fa8d871e12a496b6c2b8204abfad58aa5fcfadb83ff482c51c
+  postgres:
+    image: postgres
+    volumes:
+      - trollo-postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: 12345qwert
+      POSTGRES_USER: postgres
+      POSTGRES_DB: trollo
+volumes:
+  trollo-postgres-data:

@@ -1,0 +1,20 @@
+@import 'styles/mixins';
+
+.notification-card {
+  @include card;
+  @include flexCenter;
+
+  width: 200px;
+  height: 30px;
+
+  transform: translateY(-120%);
+  transition: transform 0.3s ease-in-out;
+
+  &--show {
+    transform: translateY(10px);
+  }
+
+  &--error {
+    box-shadow: 0 0 5px 2px #efbebe;
+  }
+}

@@ -3,11 +3,14 @@ import { AuthContext } from '../../context/AuthContext';
 import './add-tasks-column.scss';
 
 type AddTasksColumnProps = {
-  addTasksColumn: any,
-  scrollMainPageToRight: () => void,
-}
+  addTasksColumn: any;
+  scrollMainPageToRight: () => void;
+};
 
-export const AddTasksColumn: React.FC<AddTasksColumnProps> = ({ addTasksColumn, scrollMainPageToRight }) => {
+export const AddTasksColumn: React.FC<AddTasksColumnProps> = ({
+  addTasksColumn,
+  scrollMainPageToRight,
+}) => {
   const { authUserId } = useContext(AuthContext);
   const [columnName, setColumnName] = useState('');
   const [isActive, setIsActive] = useState(false);
@@ -18,9 +21,9 @@ export const AddTasksColumn: React.FC<AddTasksColumnProps> = ({ addTasksColumn, 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setColumnName(e.target.value);
-  }
+  };
 
-  const toggleActive = () => setIsActive(isActive => !isActive);
+  const toggleActive = () => setIsActive((isActive) => !isActive);
 
   const addNewColumn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +31,9 @@ export const AddTasksColumn: React.FC<AddTasksColumnProps> = ({ addTasksColumn, 
     if (columnName) {
       try {
         const token = localStorage.getItem('JWTAuthTraining');
-        const upperCaseName = `${columnName[0].toUpperCase()}${columnName.slice(1)}`;
+        const upperCaseName = `${columnName[0].toUpperCase()}${columnName.slice(
+          1
+        )}`;
 
         if (token) {
           const tasksColumn = await fetch('/tasks-column', {
@@ -41,49 +46,46 @@ export const AddTasksColumn: React.FC<AddTasksColumnProps> = ({ addTasksColumn, 
               userId: authUserId,
               title: upperCaseName,
               tasks: [],
-            })
+            }),
           });
           const tasksColumnData = await tasksColumn.json();
 
           addTasksColumn(tasksColumnData);
           setColumnName('');
-          setIsActive(isActive => !isActive);
+          setIsActive((isActive) => !isActive);
         }
       } catch (err) {
         console.log(err);
       }
     }
-  }
+  };
 
-  return (
-    isActive
-      ? <form className='add-tasks-column' onSubmit={addNewColumn}>
-        <input
-          className="input-field"
-          type="text"
-          placeholder='Enter column name'
-          value={columnName}
-          onChange={handleChange}
-        />
-        <button
-          type="submit"
-          style={{ marginRight: 10 }}
-          className="waves-effect waves-light btn"
-        >
-          Add column
-        </button>
-        <button
-          className="waves-effect waves-light btn"
-          onClick={toggleActive}
-        >
-          Cancel
-        </button>
-      </form>
-      : <button
-        className="waves-effect waves-light btn add-tasks-column__add-new-column-btn"
-        onClick={toggleActive}
+  return isActive ? (
+    <form className="add-tasks-column" onSubmit={addNewColumn}>
+      <input
+        className="input-field"
+        type="text"
+        placeholder="Enter column name"
+        value={columnName}
+        onChange={handleChange}
+      />
+      <button
+        type="submit"
+        style={{ marginRight: 10 }}
+        className="waves-effect waves-light btn"
       >
-        Add new column
+        Add column
       </button>
+      <button className="waves-effect waves-light btn" onClick={toggleActive}>
+        Cancel
+      </button>
+    </form>
+  ) : (
+    <button
+      className="waves-effect waves-light btn add-tasks-column__add-new-column-btn"
+      onClick={toggleActive}
+    >
+      Add new column
+    </button>
   );
-}
+};

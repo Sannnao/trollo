@@ -1,11 +1,16 @@
-const { Pool } = require("pg");
+const { Pool } = require('pg');
 
 const pool = new Pool();
 
 module.exports = {
   async query(text, params) {
-    const res = await pool.query(text, params);
+    try {
+      const res = await pool.query(text, params);
 
-    return res;
+      return res;
+    } catch (err) {
+      console.log('Query error:', err);
+      throw err;
+    }
   },
 };

@@ -3,14 +3,25 @@ import { Route, Routes } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { JwtTokenShape } from './interfaces';
 import { AuthContext, AuthContextShape } from './context/AuthContext';
+import {
+  NotificationContext,
+  NotificationPayload,
+} from './context/NotificationContext';
 import { MainPage, LogoutPage, WelcomePage } from './pages';
 import { PrivateRoute } from './routes/PrivateRoute';
 import { UnauthRoute } from './routes/UnauthRoute';
-import { UserInfo, Login, Register, TasksBoard } from '../src/components';
+import {
+  UserInfo,
+  Login,
+  Register,
+  TasksBoard,
+  Notification,
+} from '../src/components';
 import { LOGIN_ROUTE, REGISTER_ROUTE } from './constants/routes/authRoutes';
 import './App.css';
 
 function App() {
+  const [notification, setNotify] = useState<NotificationPayload>(null);
   const [isAuth, setIsAuth] = useState(false);
   const [authUserId, setAuthUserId] = useState<null | number>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,35 +70,38 @@ function App() {
   };
 
   return (
-    <AuthContext.Provider value={authContextData}>
-      <div className="app">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <UnauthRoute>
-                <WelcomePage />
-              </UnauthRoute>
-            }
-          >
-            <Route path={LOGIN_ROUTE} element={<Login />} />
-            <Route path={REGISTER_ROUTE} element={<Register />} />
-          </Route>
-          <Route
-            path="/main"
-            element={
-              <PrivateRoute>
-                <MainPage />
-              </PrivateRoute>
-            }
-          >
-            <Route path="tasks-board" element={<TasksBoard />} />
-            <Route path="user-info" element={<UserInfo />} />
-            <Route path="logout" element={<LogoutPage />} />
-          </Route>
-        </Routes>
-      </div>
-    </AuthContext.Provider>
+    <NotificationContext.Provider value={{ notify: setNotify, notification }}>
+      <AuthContext.Provider value={authContextData}>
+        <div className="app">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <UnauthRoute>
+                  <WelcomePage />
+                </UnauthRoute>
+              }
+            >
+              <Route path={LOGIN_ROUTE} element={<Login />} />
+              <Route path={REGISTER_ROUTE} element={<Register />} />
+            </Route>
+            <Route
+              path="/main"
+              element={
+                <PrivateRoute>
+                  <MainPage />
+                </PrivateRoute>
+              }
+            >
+              <Route path="tasks-board" element={<TasksBoard />} />
+              <Route path="user-info" element={<UserInfo />} />
+              <Route path="logout" element={<LogoutPage />} />
+            </Route>
+          </Routes>
+        </div>
+        <Notification />
+      </AuthContext.Provider>
+    </NotificationContext.Provider>
   );
 }
 
